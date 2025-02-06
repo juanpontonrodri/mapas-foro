@@ -15,14 +15,12 @@ el número del stand y luego se puede modificar el enlace en el código.
 -->
 
 <map name="image-map">
-    <area target="" alt="41" title="41" href="41" coords="980,1067,1145,1185" shape="rect">
-    <area target="" alt="40" title="40" href="40" coords="1159,1078,1322,1188" shape="rect">
-    <area target="" alt="39" title="39" href="39" coords="1333,1076,1503,1191" shape="rect">
-    <area target="" alt="38" title="38" href="38" coords="1516,1090,1677,1196" shape="rect">
+
+
 </map>
 
 <div style="position: relative; width: 100%;">
-    <img id="responsive-image" src="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/Segundo-descansillo-de-minascon-fondo-scaled.jpg" usemap="#image-map" style="width: 100%; height: auto; display: block;">
+    <img id="responsive-image" src="" usemap="#image-map" style="width: 100%; height: auto; display: block;">
     
     <!-- Contenedor donde se generarán las cajas dinámicamente -->
     <div id="clickable-container"></div>
@@ -91,19 +89,23 @@ el número del stand y luego se puede modificar el enlace en el código.
             box.dataset.imgSrc = area.imgSrc; // Guardar la URL de la imagen en un atributo de datos
             container.appendChild(box);
 
-            // Añadir eventos de mouseover y mouseout
-            box.addEventListener("mouseover", function(event) {
+            // Añadir evento de click
+            box.addEventListener("click", function(event) {
+                event.preventDefault(); // Prevenir la redirección inmediata
                 var tooltip = document.getElementById("tooltip");
                 tooltip.innerHTML = `<img src="${this.dataset.imgSrc}" alt="${this.dataset.title}" style="width: 50px; height: 50px;"><br>${this.dataset.title}`;
                 tooltip.style.display = "block";
-                tooltip.style.left = event.pageX + "px";
-                tooltip.style.top = event.pageY + "px";
+                tooltip.style.left = "50%";
+                tooltip.style.top = "50%";
+                tooltip.style.transform = "translate(-50%, -50%)"; // Centrar el tooltip
+                tooltip.dataset.href = this.href; // Guardar el enlace en el tooltip
             });
+        });
 
-            box.addEventListener("mouseout", function() {
-                var tooltip = document.getElementById("tooltip");
-                tooltip.style.display = "none";
-            });
+        // Añadir evento de click al tooltip para redirigir al enlace
+        var tooltip = document.getElementById("tooltip");
+        tooltip.addEventListener("click", function() {
+            window.location.href = this.dataset.href;
         });
     }
 

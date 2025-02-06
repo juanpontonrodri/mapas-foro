@@ -15,14 +15,25 @@ el número del stand y luego se puede modificar el enlace en el código.
 -->
 
 <map name="image-map">
-    <area target="" alt="41" title="41" href="41" coords="980,1067,1145,1185" shape="rect">
-    <area target="" alt="40" title="40" href="40" coords="1159,1078,1322,1188" shape="rect">
-    <area target="" alt="39" title="39" href="39" coords="1333,1076,1503,1191" shape="rect">
-    <area target="" alt="38" title="38" href="38" coords="1516,1090,1677,1196" shape="rect">
+    <area target="" alt="24" title="24" href="24" coords="1229,900,1340,1031" shape="rect">
+    <area target="" alt="25" title="25" href="25" coords="1444,1090,1573,1212" shape="rect">
+    <area target="" alt="26" title="26" href="26" coords="1322,1124,1444,1257" shape="rect">
+    <area target="" alt="27" title="27" href="27" coords="1202,1167,1331,1284" shape="rect">
+    <area target="" alt="28" title="28" href="28" coords="1089,1198,1220,1323" shape="rect">
+    <area target="" alt="29" title="29" href="29" coords="971,1234,1087,1352" shape="rect">
+    <area target="" alt="30" title="30" href="30" coords="847,1271,980,1372" shape="rect">
+    <area target="" alt="31" title="31" href="31" coords="1105,787,1218,1022" shape="rect">
+    <area target="" alt="32" title="32" href="32" coords="766,956,931,1203" shape="rect">
+    <area target="" alt="33" title="33" href="33" coords="901,910,781,638" shape="rect">
+    <area target="" alt="19" title="19" href="19" coords="865,479,1001,613" shape="rect">
+    <area target="" alt="20" title="20" href="20" coords="1008,530,1121,646" shape="rect">
+    <area target="" alt="21" title="21" href="21" coords="1127,547,1245,671" shape="rect">
+    <area target="" alt="22" title="22" href="22" coords="1254,579,1363,708" shape="rect">
+    <area target="" alt="23" title="23" href="23" coords="1222,789,1335,907" shape="rect">
 </map>
 
 <div style="position: relative; width: 100%;">
-    <img id="responsive-image" src="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/Segundo-descansillo-de-minascon-fondo-scaled.jpg" usemap="#image-map" style="width: 100%; height: auto; display: block;">
+    <img id="responsive-image" src="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/Hall-de-industriales-con-fondo-scaled.jpg" usemap="#image-map" style="width: 100%; height: auto; display: block;">
     
     <!-- Contenedor donde se generarán las cajas dinámicamente -->
     <div id="clickable-container"></div>
@@ -91,19 +102,23 @@ el número del stand y luego se puede modificar el enlace en el código.
             box.dataset.imgSrc = area.imgSrc; // Guardar la URL de la imagen en un atributo de datos
             container.appendChild(box);
 
-            // Añadir eventos de mouseover y mouseout
-            box.addEventListener("mouseover", function(event) {
+            // Añadir evento de click
+            box.addEventListener("click", function(event) {
+                event.preventDefault(); // Prevenir la redirección inmediata
                 var tooltip = document.getElementById("tooltip");
                 tooltip.innerHTML = `<img src="${this.dataset.imgSrc}" alt="${this.dataset.title}" style="width: 50px; height: 50px;"><br>${this.dataset.title}`;
                 tooltip.style.display = "block";
-                tooltip.style.left = event.pageX + "px";
-                tooltip.style.top = event.pageY + "px";
+                tooltip.style.left = "60%";
+                tooltip.style.top = "50%";
+                tooltip.style.transform = "translate(-50%, -50%)"; // Centrar el tooltip
+                tooltip.dataset.href = this.href; // Guardar el enlace en el tooltip
             });
+        });
 
-            box.addEventListener("mouseout", function() {
-                var tooltip = document.getElementById("tooltip");
-                tooltip.style.display = "none";
-            });
+        // Añadir evento de click al tooltip para redirigir al enlace
+        var tooltip = document.getElementById("tooltip");
+        tooltip.addEventListener("click", function() {
+            window.location.href = this.dataset.href;
         });
     }
 

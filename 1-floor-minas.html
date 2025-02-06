@@ -91,19 +91,23 @@ el número del stand y luego se puede modificar el enlace en el código.
             box.dataset.imgSrc = area.imgSrc; // Guardar la URL de la imagen en un atributo de datos
             container.appendChild(box);
 
-            // Añadir eventos de mouseover y mouseout
-            box.addEventListener("mouseover", function(event) {
+            // Añadir evento de click
+            box.addEventListener("click", function(event) {
+                event.preventDefault(); // Prevenir la redirección inmediata
                 var tooltip = document.getElementById("tooltip");
                 tooltip.innerHTML = `<img src="${this.dataset.imgSrc}" alt="${this.dataset.title}" style="width: 50px; height: 50px;"><br>${this.dataset.title}`;
                 tooltip.style.display = "block";
-                tooltip.style.left = event.pageX + "px";
-                tooltip.style.top = event.pageY + "px";
+                tooltip.style.left = "50%";
+                tooltip.style.top = "50%";
+                tooltip.style.transform = "translate(-50%, -50%)"; // Centrar el tooltip
+                tooltip.dataset.href = this.href; // Guardar el enlace en el tooltip
             });
+        });
 
-            box.addEventListener("mouseout", function() {
-                var tooltip = document.getElementById("tooltip");
-                tooltip.style.display = "none";
-            });
+        // Añadir evento de click al tooltip para redirigir al enlace
+        var tooltip = document.getElementById("tooltip");
+        tooltip.addEventListener("click", function() {
+            window.location.href = this.dataset.href;
         });
     }
 
