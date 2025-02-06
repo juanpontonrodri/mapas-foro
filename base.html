@@ -1,22 +1,5 @@
-<!-- 
-Este script permite generar cajas dinámicamente sobre una imagen con un mapa de imagen.
-Las cajas se generan automáticamente a partir de las áreas del mapa de imagen generado con la web https://www.image-map.net/. 
-En la seccion de <style> se puede modificar el estilo de las cajas. Esto nos permite poner un background: none; para hacerlas invisibles en la web o un     background: rgba(245, 2, 2, 0.5);  para que se vean mientras hacemos pruebas.
-Instrucciones:
-1. Subir la imagen a Wordpress y obtener la URL de la imagen.
-2. Crear un mapa de imagen en https://www.image-map.net/ seleccionando la opción de cargar una imagen de la web y pegando la URL de la imagen.
-3. Crear las áreas del mapa de imagen y asignarles un enlace. Para esto se puede utilizar la herramienta de dibujo de la web. Se pueden crear sin enlace simplemente indicando
-el número del stand y luego se puede modificar el enlace en el código.
-4. Copiar el código HTML ** SOLAMENTE DEL MAPA** (la parte que va desde <map hasta </map>) generado por la web y pegarlo a continuación, substituyendo el código HTML del mapa actual. 
-5. En la parte de este código posterior al mapa substiuir la URL de la imagen del año anterior por la URL de la imagen usada para crear el mapa, en la sección de src="URL_IMAGEN">.
-6. Ajustar las variables origWidth y origHeight con las dimensiones originales de la imagen.
-7. Substituir los enlaces de las áreas del mapa por los enlaces correctos.
-8. Copiar este código en un bloque de código HTML personalizado en la página de Wordpress donde se quiera mostrar el mapa.
--->
-
 <map name="image-map">
-
-
+    <!-- Agregar áreas aquí -->
 </map>
 
 <div style="position: relative; width: 100%;">
@@ -24,97 +7,118 @@ el número del stand y luego se puede modificar el enlace en el código.
     
     <!-- Contenedor donde se generarán las cajas dinámicamente -->
     <div id="clickable-container"></div>
-    <!-- Contenedor para el tooltip -->
-    <div id="tooltip" style="position: absolute; display: none; background: white; border: 1px solid black; padding: 5px;"></div>
+    
+    <!-- Tooltip mejorado -->
+    <div id="tooltip" style="display: none;">
+        <span id="close-tooltip">&times;</span>
+        <img id="tooltip-image" src="" alt="">
+        <p id="tooltip-text"></p>
+    </div>
 </div>
 
 <style>
     .clickable-box {
         position: absolute;
         background: rgba(245, 2, 2, 0.5); 
-        border: 1px solid white;
         text-decoration: none;
         display: block;
     }
 
     #tooltip {
-        font-family: 'Roboto', sans-serif; /* Cambiar la tipografía a Roboto */
+        position: fixed;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 300px;
+        text-align: center;
+        z-index: 1000;
+        cursor: pointer;
+    }
+
+    #tooltip img {
+        width: 100px;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    #tooltip p {
+        font-family: 'Roboto', sans-serif;
+        margin: 10px 0 0;
+        font-size: 16px;
+    }
+
+    #close-tooltip {
         position: absolute;
-        display: none;
-        background: white;
-        border: 1px solid black;
-        padding: 5px;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: bold;
     }
 </style>
 
 <script>
-    var origWidth = 2560; // Ancho original de la imagen
-    var origHeight = 1820; // Alto original de la imagen
+    var origWidth = 2560;
+    var origHeight = 1820;
 
-    // Función para obtener las coordenadas de las áreas del mapa dinámicamente
     function getAreasData() {
         var areas = document.querySelectorAll("map[name='image-map'] area");
         var areasData = [];
 
         areas.forEach(area => {
-            var coords = area.coords.split(',').map(Number); // Convertir coords a array de números
-            // Ordenar las coordenadas de menor a mayor en los pares (primera con tercera y segunda con cuarta)
+            var coords = area.coords.split(',').map(Number);
             var xCoords = [coords[0], coords[2]].sort((a, b) => a - b);
             var yCoords = [coords[1], coords[3]].sort((a, b) => a - b);
             coords = [xCoords[0], yCoords[0], xCoords[1], yCoords[1]];
-            //console.log(coords);
+
             areasData.push({
                 href: area.href,
                 coords: coords,
-                title: area.title, // Incluir el título
-                imgSrc: area.alt // Incluir la URL de la imagen desde el atributo alt
+                title: area.title,
+                imgSrc: area.alt
             });
         });
         return areasData;
     }
 
-    // Crear las cajas con las coordenadas obtenidas automáticamente
     function createBoxes() {
         var container = document.getElementById("clickable-container");
-        container.innerHTML = ""; // Limpiar antes de agregar
-
-        var areasData = getAreasData(); // Obtener las coordenadas y los href
+        container.innerHTML = "";
+        var areasData = getAreasData();
 
         areasData.forEach((area, index) => {
             var box = document.createElement("a");
             box.href = area.href;
             box.className = "clickable-box";
             box.id = "box" + index;
-            box.dataset.title = area.title; // Guardar el título en un atributo de datos
-            box.dataset.imgSrc = area.imgSrc; // Guardar la URL de la imagen en un atributo de datos
+            box.dataset.title = area.title;
+            box.dataset.imgSrc = area.imgSrc;
+            box.dataset.href = area.href;
             container.appendChild(box);
 
-            // Añadir evento de click
             box.addEventListener("click", function(event) {
-                event.preventDefault(); // Prevenir la redirección inmediata
+                event.preventDefault();
                 var tooltip = document.getElementById("tooltip");
-                tooltip.innerHTML = `<img src="${this.dataset.imgSrc}" alt="${this.dataset.title}" style="width: 50px; height: 50px;"><br>${this.dataset.title}`;
+                document.getElementById("tooltip-image").src = this.dataset.imgSrc;
+                document.getElementById("tooltip-text").innerText = this.dataset.title;
                 tooltip.style.display = "block";
-                tooltip.style.left = "50%";
-                tooltip.style.top = "50%";
-                tooltip.style.transform = "translate(-50%, -50%)"; // Centrar el tooltip
-                tooltip.dataset.href = this.href; // Guardar el enlace en el tooltip
+                tooltip.style.left = event.clientX + "px";
+                tooltip.style.top = event.clientY + "px";
+                tooltip.dataset.href = this.dataset.href;
             });
-        });
-
-        // Añadir evento de click al tooltip para redirigir al enlace
-        var tooltip = document.getElementById("tooltip");
-        tooltip.addEventListener("click", function() {
-            window.location.href = this.dataset.href;
         });
     }
 
     function resizeElements() {
         var img = document.getElementById("responsive-image");
         var scaleX = img.clientWidth / origWidth;
-        var scaleY =(img.clientWidth * (origHeight / origWidth)) / origHeight;
+        var scaleY = (img.clientWidth * (origHeight / origWidth)) / origHeight;
 
-        var areasData = getAreasData(); // Obtener las coordenadas y los href
+        var areasData = getAreasData();
 
         areasData.forEach((area, index) => {
             var box = document.getElementById("box" + index);
@@ -122,20 +126,34 @@ el número del stand y luego se puede modificar el enlace en el código.
             var y1 = area.coords[1] * scaleY;
             var x2 = area.coords[2] * scaleX;
             var y2 = area.coords[3] * scaleY;
-            //console.log(area.coords);
-            //console.log(x1, y1, x2, y2);
 
             box.style.left = x1 + "px";
             box.style.top = y1 + "px";
             box.style.width = (x2 - x1) + "px";
             box.style.height = (y2 - y1) + "px";
-            //console.log(box.style.left, box.style.top, box.style.width, box.style.height);
         });
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-        createBoxes(); // Genera las cajas dinámicamente
+        createBoxes();
         resizeElements();
         window.addEventListener("resize", resizeElements);
+    });
+
+    document.getElementById("close-tooltip").addEventListener("click", function() {
+        document.getElementById("tooltip").style.display = "none";
+    });
+
+    document.addEventListener("click", function(event) {
+        var tooltip = document.getElementById("tooltip");
+        if (!tooltip.contains(event.target) && !event.target.classList.contains("clickable-box")) {
+            tooltip.style.display = "none";
+        }
+    });
+
+    document.getElementById("tooltip").addEventListener("click", function() {
+        if (this.dataset.href) {
+            window.open(this.dataset.href, "_blank");
+        }
     });
 </script>
