@@ -1,30 +1,48 @@
-<map name="image-map">
+<!-- 
+Este script permite generar cajas dinámicamente sobre una imagen con un mapa de imagen.
+Las cajas se generan automáticamente a partir de las áreas del mapa de imagen generado con la web https://www.image-map.net/. 
+En la seccion de <style> se puede modificar el estilo de las cajas. Esto nos permite poner un background: none; para hacerlas invisibles en la web o un     background: rgba(245, 2, 2, 0.5);  para que se vean mientras hacemos pruebas.
+Instrucciones:
+1. Subir la imagen a Wordpress y obtener la URL de la imagen.
+2. Crear un mapa de imagen en https://www.image-map.net/ seleccionando la opción de cargar una imagen de la web y pegando la URL de la imagen.
+3. Crear las áreas del mapa de imagen y asignarles un enlace. Para esto se puede utilizar la herramienta de dibujo de la web. Se pueden crear sin enlace simplemente indicando
+el número del stand y luego se puede modificar el enlace en el código.
+4. Copiar el código HTML ** SOLAMENTE DEL MAPA** (la parte que va desde <map hasta </map>) generado por la web y pegarlo a continuación, substituyendo el código HTML del mapa actual. 
+5. En la parte de este código posterior al mapa substiuir la URL de la imagen del año anterior por la URL de la imagen usada para crear el mapa, en la sección de src="URL_IMAGEN">.
+6. Ajustar las variables origWidth y origHeight con las dimensiones originales de la imagen.
+7. Substituir los enlaces de las áreas del mapa por los enlaces correctos.
+8. Copiar este código en un bloque de código HTML personalizado en la página de Wordpress donde se quiera mostrar el mapa.
+9. Importante cambiar el nombre del mapa, el id de la imagen,id del container etc (los que llevan una XX en el nombre). Se puede reemplazar XX por el numero seleccionado para cada mapa.
+
+-->
+
+<map name="image-map-ZZ">
     <!-- Agregar áreas aquí -->
 </map>
 
 <div style="position: relative; width: 100%;">
-    <img id="responsive-image" src="" usemap="#image-map" style="width: 100%; height: auto; display: block;">
+    <img id="responsive-image-ZZ" src="" usemap="#image-map-ZZ" style="width: 100%; height: auto; display: block;">
     
     <!-- Contenedor donde se generarán las cajas dinámicamente -->
-    <div id="clickable-container"></div>
+    <div id="clickable-container-ZZ"></div>
     
     <!-- Tooltip mejorado -->
-    <div id="tooltip" style="display: none;">
-        <span id="close-tooltip">&times;</span>
-        <img id="tooltip-image" src="" alt="">
-        <p id="tooltip-text"></p>
+    <div id="tooltip-ZZ" style="display: none;">
+        <span id="close-tooltip-ZZ">&times;</span>
+        <img id="tooltip-image-ZZ" src="" alt="">
+        <p id="tooltip-text-ZZ"></p>
     </div>
 </div>
 
 <style>
-    .clickable-box {
+    .clickable-box-ZZ {
         position: absolute;
         background: rgba(245, 2, 2, 0.5); 
         text-decoration: none;
         display: block;
     }
 
-    #tooltip {
+    #tooltip-ZZ {
         position: fixed;
         background: rgba(255, 255, 255, 0.9);
         border-radius: 8px;
@@ -39,19 +57,19 @@
         cursor: pointer;
     }
 
-    #tooltip img {
+    #tooltip-ZZ img {
         width: 100px;
         height: auto;
         border-radius: 5px;
     }
 
-    #tooltip p {
+    #tooltip-ZZ p {
         font-family: 'Roboto', sans-serif;
         margin: 10px 0 0;
         font-size: 16px;
     }
 
-    #close-tooltip {
+    #close-tooltip-ZZ {
         position: absolute;
         top: 5px;
         right: 10px;
@@ -62,11 +80,11 @@
 </style>
 
 <script>
-    var origWidth = 2560;
-    var origHeight = 1820;
+    var origWidthZZ = 2560;
+    var origHeightZZ = 1820;
 
-    function getAreasData() {
-        var areas = document.querySelectorAll("map[name='image-map'] area");
+    function getAreasDataZZ() {
+        var areas = document.querySelectorAll("map[name='image-map-ZZ'] area");
         var areasData = [];
 
         areas.forEach(area => {
@@ -85,16 +103,16 @@
         return areasData;
     }
 
-    function createBoxes() {
-        var container = document.getElementById("clickable-container");
+    function createBoxesZZ() {
+        var container = document.getElementById("clickable-container-ZZ");
         container.innerHTML = "";
-        var areasData = getAreasData();
+        var areasData = getAreasDataZZ();
 
         areasData.forEach((area, index) => {
             var box = document.createElement("a");
             box.href = area.href;
-            box.className = "clickable-box";
-            box.id = "box" + index;
+            box.className = "clickable-box-ZZ";
+            box.id = "boxZZ-" + index;
             box.dataset.title = area.title;
             box.dataset.imgSrc = area.imgSrc;
             box.dataset.href = area.href;
@@ -102,9 +120,9 @@
 
             box.addEventListener("click", function(event) {
                 event.preventDefault();
-                var tooltip = document.getElementById("tooltip");
-                document.getElementById("tooltip-image").src = this.dataset.imgSrc;
-                document.getElementById("tooltip-text").innerText = this.dataset.title;
+                var tooltip = document.getElementById("tooltip-ZZ");
+                document.getElementById("tooltip-image-ZZ").src = this.dataset.imgSrc;
+                document.getElementById("tooltip-text-ZZ").innerText = this.dataset.title;
                 tooltip.style.display = "block";
                 tooltip.style.left = event.clientX + "px";
                 tooltip.style.top = event.clientY + "px";
@@ -113,15 +131,15 @@
         });
     }
 
-    function resizeElements() {
-        var img = document.getElementById("responsive-image");
-        var scaleX = img.clientWidth / origWidth;
-        var scaleY = (img.clientWidth * (origHeight / origWidth)) / origHeight;
+    function resizeElementsZZ() {
+        var img = document.getElementById("responsive-image-ZZ");
+        var scaleX = img.clientWidth / origWidthZZ;
+        var scaleY = (img.clientWidth * (origHeightZZ / origWidthZZ)) / origHeightZZ;
 
-        var areasData = getAreasData();
+        var areasData = getAreasDataZZ();
 
         areasData.forEach((area, index) => {
-            var box = document.getElementById("box" + index);
+            var box = document.getElementById("boxZZ-" + index);
             var x1 = area.coords[0] * scaleX;
             var y1 = area.coords[1] * scaleY;
             var x2 = area.coords[2] * scaleX;
@@ -135,23 +153,24 @@
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-        createBoxes();
-        resizeElements();
-        window.addEventListener("resize", resizeElements);
+        createBoxesZZ();
+        resizeElementsZZ();
+        window.addEventListener("resize", resizeElementsZZ);
     });
 
-    document.getElementById("close-tooltip").addEventListener("click", function() {
-        document.getElementById("tooltip").style.display = "none";
+    document.getElementById("close-tooltip-ZZ").addEventListener("click", function() {
+        event.stopPropagation();
+        document.getElementById("tooltip-ZZ").style.display = "none";
     });
 
     document.addEventListener("click", function(event) {
-        var tooltip = document.getElementById("tooltip");
-        if (!tooltip.contains(event.target) && !event.target.classList.contains("clickable-box")) {
+        var tooltip = document.getElementById("tooltip-ZZ");
+        if (!tooltip.contains(event.target) && !event.target.classList.contains("clickable-box-ZZ")) {
             tooltip.style.display = "none";
         }
     });
 
-    document.getElementById("tooltip").addEventListener("click", function() {
+    document.getElementById("tooltip-ZZ").addEventListener("click", function() {
         if (this.dataset.href) {
             window.open(this.dataset.href, "_blank");
         }

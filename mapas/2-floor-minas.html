@@ -14,36 +14,38 @@ el número del stand y luego se puede modificar el enlace en el código.
 8. Copiar este código en un bloque de código HTML personalizado en la página de Wordpress donde se quiera mostrar el mapa.
 -->
 
-<map name="image-map">
-    <area target="" alt="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/ictel-ingenieros-s.l.-.png" title="41" href="41" coords="980,1067,1145,1185" shape="rect">
-    <area target="" alt="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/stac2.png" title="40" href="40" coords="1159,1078,1322,1188" shape="rect">
-    <area target="" alt="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/idom-consulting-engineering-architecture-sau.png" title="39" href="39" coords="1333,1076,1503,1191" shape="rect">
-    <area target="" alt="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/feuga.png" title="38" href="38" coords="1516,1090,1677,1196" shape="rect">
+<map name="image-map-3">
+    <area target="_blank" alt="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/ictel-ingenieros-s.l.-.png" title="41" href="https://ictel.com/" coords="980,1067,1145,1185" shape="rect">
+    <area target="_blank" alt="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/stac2.png" title="40" href="https://www.stac.es/" coords="1159,1078,1322,1188" shape="rect">
+    <area target="_blank" alt="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/idom-consulting-engineering-architecture-sau.png" title="39" href="https://www.idom.com/" coords="1333,1076,1503,1191" shape="rect">
+    <area target="_blank" alt="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/feuga.png" title="38" href="https://www.feuga.es/" coords="1516,1090,1677,1196" shape="rect">
 </map>
 
+
+
 <div style="position: relative; width: 100%;">
-    <img id="responsive-image" src="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/Segundo-descansillo-de-minascon-fondo-scaled.jpg" usemap="#image-map" style="width: 100%; height: auto; display: block;">
+    <img id="responsive-image-3" src="https://www.forotecnoloxico.net/wp-content/uploads/2025/02/Segundo-descansillo-de-minascon-fondo-scaled.jpg" usemap="#image-map-3" style="width: 100%; height: auto; display: block;">
     
     <!-- Contenedor donde se generarán las cajas dinámicamente -->
-    <div id="clickable-container"></div>
+    <div id="clickable-container-3"></div>
     
     <!-- Tooltip mejorado -->
-    <div id="tooltip" style="display: none;">
-        <span id="close-tooltip">&times;</span>
-        <img id="tooltip-image" src="" alt="">
-        <p id="tooltip-text"></p>
+    <div id="tooltip-3" style="display: none;">
+        <span id="close-tooltip-3">&times;</span>
+        <img id="tooltip-image-3" src="" alt="">
+        <p id="tooltip-text-3"></p>
     </div>
 </div>
 
 <style>
-    .clickable-box {
+    .clickable-box-3 {
         position: absolute;
         background: none; 
         text-decoration: none;
         display: block;
     }
 
-    #tooltip {
+    #tooltip-3 {
         position: fixed;
         background: rgba(255, 255, 255, 0.9);
         border-radius: 8px;
@@ -58,19 +60,19 @@ el número del stand y luego se puede modificar el enlace en el código.
         cursor: pointer;
     }
 
-    #tooltip img {
+    #tooltip-3 img {
         width: 100px;
         height: auto;
         border-radius: 5px;
     }
 
-    #tooltip p {
+    #tooltip-3 p {
         font-family: 'Roboto', sans-serif;
         margin: 10px 0 0;
         font-size: 16px;
     }
 
-    #close-tooltip {
+    #close-tooltip-3 {
         position: absolute;
         top: 5px;
         right: 10px;
@@ -81,11 +83,11 @@ el número del stand y luego se puede modificar el enlace en el código.
 </style>
 
 <script>
-    var origWidth = 2560;
-    var origHeight = 1820;
+    var origWidth3 = 2560;
+    var origHeight3 = 1820;
 
-    function getAreasData() {
-        var areas = document.querySelectorAll("map[name='image-map'] area");
+    function getAreasData3() {
+        var areas = document.querySelectorAll("map[name='image-map-3'] area");
         var areasData = [];
 
         areas.forEach(area => {
@@ -104,16 +106,16 @@ el número del stand y luego se puede modificar el enlace en el código.
         return areasData;
     }
 
-    function createBoxes() {
-        var container = document.getElementById("clickable-container");
+    function createBoxes3() {
+        var container = document.getElementById("clickable-container-3");
         container.innerHTML = "";
-        var areasData = getAreasData();
+        var areasData = getAreasData3();
 
         areasData.forEach((area, index) => {
             var box = document.createElement("a");
             box.href = area.href;
-            box.className = "clickable-box";
-            box.id = "box" + index;
+            box.className = "clickable-box-3";
+            box.id = "box3-" + index;
             box.dataset.title = area.title;
             box.dataset.imgSrc = area.imgSrc;
             box.dataset.href = area.href;
@@ -121,9 +123,9 @@ el número del stand y luego se puede modificar el enlace en el código.
 
             box.addEventListener("click", function(event) {
                 event.preventDefault();
-                var tooltip = document.getElementById("tooltip");
-                document.getElementById("tooltip-image").src = this.dataset.imgSrc;
-                document.getElementById("tooltip-text").innerText = this.dataset.title;
+                var tooltip = document.getElementById("tooltip-3");
+                document.getElementById("tooltip-image-3").src = this.dataset.imgSrc;
+                document.getElementById("tooltip-text-3").innerText = this.dataset.title;
                 tooltip.style.display = "block";
                 tooltip.style.left = event.clientX + "px";
                 tooltip.style.top = event.clientY + "px";
@@ -132,15 +134,15 @@ el número del stand y luego se puede modificar el enlace en el código.
         });
     }
 
-    function resizeElements() {
-        var img = document.getElementById("responsive-image");
-        var scaleX = img.clientWidth / origWidth;
-        var scaleY = (img.clientWidth * (origHeight / origWidth)) / origHeight;
+    function resizeElements3() {
+        var img = document.getElementById("responsive-image-3");
+        var scaleX = img.clientWidth / origWidth3;
+        var scaleY = (img.clientWidth * (origHeight3 / origWidth3)) / origHeight3;
 
-        var areasData = getAreasData();
+        var areasData = getAreasData3();
 
         areasData.forEach((area, index) => {
-            var box = document.getElementById("box" + index);
+            var box = document.getElementById("box3-" + index);
             var x1 = area.coords[0] * scaleX;
             var y1 = area.coords[1] * scaleY;
             var x2 = area.coords[2] * scaleX;
@@ -154,23 +156,24 @@ el número del stand y luego se puede modificar el enlace en el código.
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-        createBoxes();
-        resizeElements();
-        window.addEventListener("resize", resizeElements);
+        createBoxes3();
+        resizeElements3();
+        window.addEventListener("resize", resizeElements3);
     });
 
-    document.getElementById("close-tooltip").addEventListener("click", function() {
-        document.getElementById("tooltip").style.display = "none";
+    document.getElementById("close-tooltip-3").addEventListener("click", function() {
+        event.stopPropagation();
+        document.getElementById("tooltip-3").style.display = "none";
     });
 
     document.addEventListener("click", function(event) {
-        var tooltip = document.getElementById("tooltip");
-        if (!tooltip.contains(event.target) && !event.target.classList.contains("clickable-box")) {
+        var tooltip = document.getElementById("tooltip-3");
+        if (!tooltip.contains(event.target) && !event.target.classList.contains("clickable-box-3")) {
             tooltip.style.display = "none";
         }
     });
 
-    document.getElementById("tooltip").addEventListener("click", function() {
+    document.getElementById("tooltip-3").addEventListener("click", function() {
         if (this.dataset.href) {
             window.open(this.dataset.href, "_blank");
         }
